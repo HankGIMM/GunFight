@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2.0f;
     public Transform playerCamera;
     private float verticalRotation = 0;
+    public float interactionDistance = 5.0f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -36,5 +38,21 @@ public class PlayerController : MonoBehaviour
 
         Vector3 move = transform.right * moveLeftRight + transform.forward * moveForwardBackward;
         transform.position += move;
+    }
+    void HandleInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, interactionDistance))
+            {
+                Interactable interactable = hit.collider.GetComponent<Interactable>();
+                if (interactable != null)
+                {
+                    interactable.Interact();
+                }
+            }
+        }
     }
 }
