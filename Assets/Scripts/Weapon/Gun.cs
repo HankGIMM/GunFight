@@ -7,6 +7,18 @@ public class Gun : Weapon
     public float bulletSpeed = 20.0f;
     public float bulletDamage = 10.0f;
 
+    public AudioClip shootSound;
+
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
     public override void Shoot()
     {
 
@@ -34,5 +46,10 @@ public class Gun : Weapon
         bullet.speed = bulletSpeed;
         bullet.damage = bulletDamage;
         bullet.Initialize(bulletSpawnPoint.forward);
+
+        if (shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
     }
 }
