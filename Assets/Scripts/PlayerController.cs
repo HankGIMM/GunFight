@@ -16,8 +16,15 @@ public class PlayerController : MonoBehaviour
 
     public Weapon equippedWeapon;
 
-    private float gravity = -9.81f;
+    public float gravity;
     private Vector3 velocity;
+
+    public float jumpHeight = 3.0f;
+    private bool isGrounded;
+
+    public Transform groundCheck;
+    public float groundDistance = 0.2f;
+    public LayerMask groundMask;
 
     // Start is called before the first frame update
     void Start()
@@ -50,12 +57,22 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
         float moveForwardBackward = Input.GetAxis("Vertical");
         float moveLeftRight = Input.GetAxis("Horizontal");
 
         Vector3 move = transform.right * moveLeftRight + transform.forward * moveForwardBackward;
         controller.Move(move * speed * Time.deltaTime);
 
+        if (Input.GetButtonDown("Jump") && controller.isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
