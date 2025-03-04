@@ -155,7 +155,7 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1569767541168152612}
   bulletSpeed: 500
   bulletDamage: 10
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: d27cd88ad61b1e142864358690941e54, type: 3}
 --- !u!1 &6421910476368526907
 GameObject:
   m_ObjectHideFlags: 0
