@@ -1,18 +1,32 @@
+using UnityEditor;
 using UnityEngine;
+using System.Collections;
 
 public abstract class Bullet : MonoBehaviour
 {
-     public float speed;
+    public float speed;
     public float damage;
     public Rigidbody rb;
     public GameObject impactEffect;
+
+    public float gravity = 9.81f;
+    public float drag = 0.01f;
 
     public abstract void Initialize(Vector3 direction);
 
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.useGravity = false; //gravity handled elsewhere 
+        StartCoroutine(ApplyPhysics());
     }
+
+    // protected virtual void FixedUpdate()
+    // {
+    //     ApplyGravity(); 
+
+    //     Debug.Log("FixedUpdate");
+    // }
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
@@ -32,5 +46,23 @@ public abstract class Bullet : MonoBehaviour
         // {
         //     enemy.TakeDamage(damage);
         // }
+    }
+
+    private IEnumerator ApplyPhysics()
+    {
+        while (true)
+        {
+            // Apply gravity
+            Vector3 gravityForce = Vector3.down * gravity * Time.fixedDeltaTime;
+            rb.velocity += gravityForce;
+
+            // Apply drag
+            Vector3 dragForce = rb.velocity.normalized * (rb.velocity.magnitude * drag);
+            rb.velocity -= dragForce * Time.fixedDeltaTime;
+
+            Debug.Log($"Bullet velocity: {rb.velocity.magnitude}");
+
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

@@ -4,7 +4,7 @@ public class Gun : Weapon
 {
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
-    public float bulletSpeed = 20.0f;
+    public float bulletSpeed = 1000.0f;
     public float bulletDamage = 10.0f;
 
     public AudioClip shootSound;
@@ -46,6 +46,8 @@ public class Gun : Weapon
         bullet.speed = bulletSpeed;
         bullet.damage = bulletDamage;
         bullet.Initialize(bulletSpawnPoint.forward);
+
+        Debug.Log($"Bullet initialized with speed: {bulletSpeed}");
 
         if (shootSound != null)
         {
