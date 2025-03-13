@@ -19,19 +19,18 @@ public abstract class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false; //gravity handled elsewhere 
         StartCoroutine(ApplyPhysics());
+        StartCoroutine(DespawnAfterTime(3.0f));
     }
 
-    // protected virtual void FixedUpdate()
-    // {
-    //     ApplyGravity(); 
 
-    //     Debug.Log("FixedUpdate");
-    // }
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        HandleCollision(collision);
-        Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Target"))
+        {
+            Debug.Log("Bullet collided with " + collision.gameObject.name);
+            Destroy(gameObject);
+        }
     }
 
     protected void HandleCollision(Collision collision)
@@ -41,11 +40,7 @@ public abstract class Bullet : MonoBehaviour
             Instantiate(impactEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         }
 
-        // Enemy enemy = collision.collider.GetComponent<Enemy>();
-        // if (enemy != null)
-        // {
-        //     enemy.TakeDamage(damage);
-        // }
+
     }
 
     private IEnumerator ApplyPhysics()
@@ -65,4 +60,11 @@ public abstract class Bullet : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
     }
+
+    private IEnumerator DespawnAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
+    }
+
 }
