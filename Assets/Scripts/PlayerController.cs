@@ -26,7 +26,10 @@ public class PlayerController : MonoBehaviour
     public float groundDistance = 0.2f;
     public LayerMask groundMask;
 
-    // Start is called before the first frame update
+    // Recoil variables
+    public float recoilAmount = 2.0f; // How much the camera moves
+    public float recoilSpeed = 5.0f; // How quickly the camera recovers
+    private float currentRecoil = 0.0f;
     void Start()
     {
 
@@ -41,6 +44,9 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleInteraction();
         HandleShooting();
+
+        // Smoothly recover from recoil
+        currentRecoil = Mathf.Lerp(currentRecoil, 0, Time.deltaTime * recoilSpeed);
     }
 
     void HandleMouseLook()
@@ -103,5 +109,10 @@ public class PlayerController : MonoBehaviour
                 equippedWeapon.Shoot();
             }
         }
+    }
+        
+    public void ApplyRecoil(float amount)
+    {
+        currentRecoil += amount;
     }
 }

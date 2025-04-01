@@ -155,6 +155,10 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1569767541168152612}
   bulletSpeed: 500
   bulletDamage: 10
+  bulletSpread: 500
+  currentFireMode: 0
+  burstCount: 3
+  burstDelay: 0.1
   shootSound: {fileID: 8300000, guid: d27cd88ad61b1e142864358690941e54, type: 3}
 --- !u!1 &6421910476368526907
 GameObject:

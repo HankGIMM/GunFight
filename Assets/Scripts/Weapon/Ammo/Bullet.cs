@@ -31,6 +31,13 @@ public abstract class Bullet : MonoBehaviour
             Debug.Log("Bullet collided with " + collision.gameObject.name);
             Destroy(gameObject);
         }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("Bullet collided with " + collision.gameObject.name);
+            HandleCollision(collision);
+            Destroy(gameObject);
+        }
     }
 
     protected void HandleCollision(Collision collision)
