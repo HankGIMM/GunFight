@@ -262,6 +262,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
+  recoilAmount: 2
+  recoilSpeed: 5
 --- !u!1001 &4545652788699160984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -314,6 +316,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunTest
       objectReference: {fileID: 0}
+    - target: {fileID: 7280704520405941125, guid: 739f6afded9604f47b7c191005dc88ab, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 105316952943879212}
+    - target: {fileID: 7280704520405941125, guid: 739f6afded9604f47b7c191005dc88ab, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 6980926193898011584}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

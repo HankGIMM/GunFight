@@ -38,6 +38,11 @@ public class Gun : Weapon
     {
         audioSource = GetComponent<AudioSource>();
 
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component is missing from the Gun GameObject.");
+        }
+
         if (playerCamera != null)
         {
             originalCameraRotation = playerCamera.localEulerAngles;
@@ -59,7 +64,7 @@ public class Gun : Weapon
             {
                 Shoot();
             }
-            else if (currentFireMode == FireMode.Burst)
+            else if (currentFireMode == FireMode.Burst && !isShooting)
             {
                 StartCoroutine(BurstFire());
             }
