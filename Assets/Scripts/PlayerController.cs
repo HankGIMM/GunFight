@@ -26,10 +26,8 @@ public class PlayerController : MonoBehaviour
     public float groundDistance = 0.2f;
     public LayerMask groundMask;
 
-    // Recoil variables
-    public float recoilAmount = 2.0f; // How much the camera moves
-    public float recoilSpeed = 5.0f; // How quickly the camera recovers
-    private float currentRecoil = 0.0f;
+    private Interactable interactable;
+
     void Start()
     {
 
@@ -45,8 +43,6 @@ public class PlayerController : MonoBehaviour
         HandleInteraction();
         HandleShooting();
 
-        // Smoothly recover from recoil
-        currentRecoil = Mathf.Lerp(currentRecoil, 0, Time.deltaTime * recoilSpeed);
     }
 
     void HandleMouseLook()
@@ -85,20 +81,36 @@ public class PlayerController : MonoBehaviour
 
     void HandleInteraction()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactionDistance))
         {
-            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, interactionDistance))
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+
+            if (interactable != null)
             {
-                Interactable interactable = hit.collider.GetComponent<Interactable>();
-                if (interactable != null)
+                // Highlight the interactable object
+                interactable.Highlight();
+
+                // Check if the player presses the interaction key
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     interactable.Interact();
                 }
             }
+            else
+            {
+                if (interactable != null)
+                {
+                    interactable.Unhighlight();
+                    interactable = null;
+                }
+
+            }
         }
     }
+
 
     void HandleShooting()
     {
@@ -110,9 +122,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-        
-    public void ApplyRecoil(float amount)
-    {
-        currentRecoil += amount;
-    }
+
 }

@@ -34,6 +34,9 @@ public class Gun : Weapon
 
     private AudioSource audioSource;
 
+    //camera recoil
+    public CameraRecoil cameraRecoil;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -63,6 +66,7 @@ public class Gun : Weapon
             if (currentFireMode == FireMode.Single)
             {
                 Shoot();
+                ApplyRecoil();
             }
             else if (currentFireMode == FireMode.Burst && !isShooting)
             {
@@ -75,11 +79,6 @@ public class Gun : Weapon
             StartCoroutine(AutomaticFire());
         }
 
-        //recoil through the PlayerController
-        if (playerController != null)
-        {
-            playerController.ApplyRecoil(2.0f); // Example recoil amount
-        }
     }
 
     public override void Shoot()
@@ -148,6 +147,7 @@ public class Gun : Weapon
         for (currentBurst = 0; currentBurst < burstCount; currentBurst++)
         {
             Shoot();
+            ApplyRecoil();
             yield return new WaitForSeconds(burstDelay);
         }
         isShooting = false;
@@ -159,8 +159,21 @@ public class Gun : Weapon
         while (Input.GetMouseButton(0))
         {
             Shoot();
+            ApplyRecoil();
             yield return new WaitForSeconds(burstDelay); // Use burstDelay as the fire rate for automatic mode
         }
         isShooting = false;
+    }
+
+    private void ApplyRecoil()
+    {
+        if (cameraRecoil != null)
+        {
+            cameraRecoil.AddRecoil(2.0f); // Example recoil amount
+        }
+        else
+        {
+            Debug.LogWarning("CameraRecoil script is not assigned to the Gun.");
+        }
     }
 }

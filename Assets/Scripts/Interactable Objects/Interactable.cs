@@ -5,6 +5,8 @@ public abstract class Interactable : MonoBehaviour
     private Material originalMaterial;
     private Material highlightMaterial;
 
+    public PlayerController playerController;
+
     void Start()
     {
        originalMaterial = GetComponent<Renderer>().material;

@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Bullet : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public abstract class Bullet : MonoBehaviour
     public float gravity = 9.81f;
     public float drag = 0.01f;
 
+    public Dictionary<string, AudioClip> tagToAudioClip = new Dictionary<string, AudioClip>();
     public abstract void Initialize(Vector3 direction);
 
     protected virtual void Start()
@@ -20,6 +22,10 @@ public abstract class Bullet : MonoBehaviour
         rb.useGravity = false; //gravity handled elsewhere 
         StartCoroutine(ApplyPhysics());
         StartCoroutine(DespawnAfterTime(3.0f));
+
+        tagToAudioClip.Add("Wall", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetWall"));
+        tagToAudioClip.Add("Target", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetTarget"));
+        tagToAudioClip.Add("Ground", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetGround"));
     }
 
 
@@ -47,6 +53,24 @@ public abstract class Bullet : MonoBehaviour
             Instantiate(impactEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         }
 
+        //sound played based off tag
+        if (tagToAudioClip.TryGetValue(collision.gameObject.tag, out AudioClip clip))
+        {
+            GameObject audioSourceObject = new GameObject("RicochetSound");
+            audioSourceObject.transform.position = collision.contacts[0].point;
+
+            AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
+            audioSource.clip = clip;
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1.0f; // Make it 3D sound
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 50f;
+
+            audioSource.Play();
+
+            // Destroy the audio source after 1 second
+            Destroy(audioSourceObject, 1.0f);
+        }
 
     }
 
