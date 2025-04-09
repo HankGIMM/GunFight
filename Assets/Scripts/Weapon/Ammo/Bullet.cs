@@ -59,6 +59,8 @@ public abstract class Bullet : MonoBehaviour
             GameObject audioSourceObject = new GameObject("RicochetSound");
             audioSourceObject.transform.position = collision.contacts[0].point;
 
+
+
             AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
             audioSource.clip = clip;
             audioSource.playOnAwake = false;
@@ -86,7 +88,7 @@ public abstract class Bullet : MonoBehaviour
             Vector3 dragForce = rb.velocity.normalized * (rb.velocity.magnitude * drag);
             rb.velocity -= dragForce * Time.fixedDeltaTime;
 
-            Debug.Log($"Bullet velocity: {rb.velocity.magnitude}");
+           // Debug.Log($"Bullet velocity: {rb.velocity.magnitude}");
 
             yield return new WaitForFixedUpdate();
         }
