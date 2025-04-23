@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68eb1269bcd261243983801adc1cefca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 6537549588696934822, guid: 827149e2f0fbdf74fb1b02961331472e, type: 3}
+  Player: {fileID: 0}
   Health: 100
-  DetectionRange: 15
+  DetectionRange: 500
   ShootingRange: 10
-  RunSpeed: 3.5
+  RunSpeed: 7
   CoverPoint: {fileID: 736792710382197870, guid: e522176b1a3a51f4087b2a2e86f8daf7, type: 3}
   NavAgent: {fileID: 0}
 --- !u!1 &3460766025306841805

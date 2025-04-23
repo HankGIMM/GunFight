@@ -20,6 +20,12 @@ public class EnemyStateController : MonoBehaviour
 
     private void Start()
     {
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (Player == null)
+        {
+            Debug.LogError("Player not found. Make sure the player has the tag 'Player'.");
+            return;
+        }
         NavAgent = GetComponent<NavMeshAgent>();
         TransitionToState(new IdleState(this));
     }
