@@ -1239,7 +1239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6493949934646925853, guid: 827149e2f0fbdf74fb1b02961331472e, type: 3}
       propertyPath: bulletSpeed
-      value: 700
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 6493949934646925853, guid: 827149e2f0fbdf74fb1b02961331472e, type: 3}
       propertyPath: bulletDamage

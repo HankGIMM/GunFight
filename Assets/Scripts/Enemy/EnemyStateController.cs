@@ -18,6 +18,8 @@ public class EnemyStateController : MonoBehaviour
     [HideInInspector]
     public NavMeshAgent NavAgent;
 
+    private bool isDead = false; // check if the enemy is dead
+
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -32,11 +34,18 @@ public class EnemyStateController : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return; // Prevent updates if already dead
         CurrentState?.UpdateState();
     }
 
     public void TransitionToState(EnemyState newState)
     {
+        if (this == null || gameObject == null) // Check if the enemy is destroyed
+        {
+            Debug.LogWarning("Enemy is already destroyed. Cannot transition to a new state.");
+            return;
+        }
+
         CurrentState?.ExitState();
         CurrentState = newState;
         CurrentState.EnterState();
@@ -49,10 +58,14 @@ public class EnemyStateController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return; // Prevent taking damage if already dead
+
+
         Health -= damage;
         Debug.Log($"Enemy took damage: {damage}. Current Health: {Health}");
         if (Health <= 0)
         {
+            isDead = true;
             TransitionToState(new DieState(this));
         }
 

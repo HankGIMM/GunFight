@@ -316,6 +316,10 @@ PrefabInstance:
       value: GunTest
       objectReference: {fileID: 0}
     - target: {fileID: 7280704520405941125, guid: 739f6afded9604f47b7c191005dc88ab, type: 3}
+      propertyPath: bulletSpeed
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280704520405941125, guid: 739f6afded9604f47b7c191005dc88ab, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 105316952943879212}

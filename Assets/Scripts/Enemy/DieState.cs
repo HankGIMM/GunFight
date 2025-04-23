@@ -10,9 +10,16 @@ public class DieState : EnemyState
     {
         Debug.Log("Entering Die State");
         stateController.NavAgent.isStopped = true; // Stop movement
-        GameObject.Destroy(stateController.gameObject);
+
+        // Delay destruction to avoid conflicts with other states
+        stateController.StartCoroutine(DestroyAfterDelay(0.4f)); // Small delay to ensure no further logic runs
     }
 
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameObject.Destroy(stateController.gameObject);
+    }
     public override void UpdateState()
     {
         // No updates needed for the Die state
