@@ -6,7 +6,7 @@ public class Gun : Weapon
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
     public float bulletSpeed = 1000.0f;
-    public float bulletDamage = 10.0f;
+    public float bulletDamage = 81.0f;
 
     //buulet spread
     public float bulletSpread;
@@ -63,7 +63,7 @@ public class Gun : Weapon
         // Handle shooting 
         if (Input.GetMouseButtonDown(0)) // Left mouse button
         {
-            if (currentFireMode == FireMode.Single)
+            if (currentFireMode == FireMode.Single && !isShooting)
             {
                 Shoot();
                 ApplyRecoil();
@@ -83,7 +83,10 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
+       if (isShooting) return; // Prevent overlapping shooting
+        isShooting = true;
 
+        
         if (bulletPrefab == null)
         {
             Debug.LogError("Bullet prefab is not assigned.");
@@ -112,7 +115,7 @@ public class Gun : Weapon
         bullet.damage = bulletDamage;
         bullet.Initialize(direction);
 
-        Debug.Log($"Bullet initialized with speed: {bulletSpeed}");
+        //  Debug.Log($"Bullet initialized with speed: {bulletSpeed}");
 
         if (shootSound != null)
         {
@@ -122,6 +125,8 @@ public class Gun : Weapon
         {
             Debug.LogWarning("Shoot sound is not assigned.");
         }
+
+        isShooting = false; // Reset shooting state after shoot
     }
     private Vector3 CalculateSpreadDirection()
     {
@@ -162,14 +167,14 @@ public class Gun : Weapon
             ApplyRecoil();
             yield return new WaitForSeconds(burstDelay); // Use burstDelay as the fire rate for automatic mode
         }
-        isShooting = false;
+
     }
 
     private void ApplyRecoil()
     {
         if (cameraRecoil != null)
         {
-            cameraRecoil.AddRecoil(2.0f); // Example recoil amount
+            cameraRecoil.AddRecoil(4.0f); // Example recoil amount
         }
         else
         {

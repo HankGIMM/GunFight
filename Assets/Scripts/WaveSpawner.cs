@@ -17,9 +17,9 @@ public class WaveSpawner : MonoBehaviour
     private bool isSpawning = false;  // Is a wave currently spawning
 
     private List<GameObject> spawnedEnemies = new List<GameObject>(); // List of spawned enemies
-    
+
     public TextMeshProUGUI waveText; // Text to display the current wave number
-    
+
 
 
     void Start()
@@ -46,6 +46,13 @@ public class WaveSpawner : MonoBehaviour
             spawnPosition.y = spawnPoints[spawnPointIndex].position.y; // Assuming you want to keep the enemies on the ground
 
             GameObject enemy = Instantiate(enemyPrefabs[currentWave - 1], spawnPosition, Quaternion.identity);
+
+            EnemyStateController enemyController = enemy.GetComponent<EnemyStateController>();
+            if (enemyController != null)
+            {
+                enemyController.Player = GameObject.FindWithTag("Player").transform; // Ensure the player is tagged as "Player"
+            }
+
             spawnedEnemies.Add(enemy); // Add spawned enemy to the list
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
@@ -97,7 +104,7 @@ public class WaveSpawner : MonoBehaviour
     }
 
     // Check if all spawned enemies are destroyed
-    bool AreAllEnemiesDestroyed()
+    public bool AreAllEnemiesDestroyed()
     {
         // Remove any null entries (destroyed enemies) from the list
         spawnedEnemies.RemoveAll(enemy => enemy == null);

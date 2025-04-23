@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
     private Interactable interactable;
 
+    public float Health = 100f;
+
     void Start()
     {
 
@@ -41,19 +43,25 @@ public class PlayerController : MonoBehaviour
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
-        HandleShooting();
+        // HandleShooting();
 
     }
 
     void HandleMouseLook()
     {
+        // Get mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
+        // Adjust vertical rotation (looking up and down)
         verticalRotation -= mouseY;
-        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f); // Prevent over-rotation
 
-        playerCamera.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
+        // Apply vertical rotation to the camera, including recoil
+        float recoilOffset = playerCamera.GetComponent<CameraRecoil>()?.currentRecoil ?? 0;
+        playerCamera.localRotation = Quaternion.Euler(verticalRotation - recoilOffset, 0, 0);
+
+        // Apply horizontal rotation to the player body
         transform.Rotate(Vector3.up * mouseX);
     }
 
@@ -112,14 +120,26 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void HandleShooting()
+    // void HandleShooting()
+    // {
+    //     if (Input.GetMouseButtonDown(0)) // Left mouse button
+    //     {
+    //         if (equippedWeapon != null)
+    //         {
+    //             equippedWeapon.Shoot();
+    //         }
+    //     }
+    // }
+
+    public void TakeDamage(float damage)
     {
-        if (Input.GetMouseButtonDown(0)) // Left mouse button
+        Health -= damage;
+        Debug.Log($"Player took {damage} damage. Remaining Health: {Health}");
+
+        if (Health <= 0)
         {
-            if (equippedWeapon != null)
-            {
-                equippedWeapon.Shoot();
-            }
+            Debug.Log("Player is dead!");
+            // Add logic for player death (e.g., game over screen)
         }
     }
 

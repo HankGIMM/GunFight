@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Ground
   - Tank
+  - Enemy
+  - CoverPoint
   layers:
   - Default
   - TransparentFX
