@@ -41,6 +41,8 @@ public class Gun : Weapon
 
     private void Start()
     {
+        transform.localRotation = Quaternion.identity; // Reset local rotation to (0, 0, 0)
+
         audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)

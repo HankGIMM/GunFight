@@ -8,8 +8,17 @@ public class ShootState : EnemyState
     private float shootCooldown = 1f;
     private float lastShootTime;
 
-    public ShootState(EnemyStateController controller) : base(controller) { }
+    private EnemyGun enemyGun; // Reference to the enemy's gun
 
+    public ShootState(EnemyStateController controller) : base(controller)
+    {
+        enemyGun = controller.GetComponent<EnemyGun>(); // Get the enemy's gun component
+        if (enemyGun == null)
+        {
+            Debug.LogError("EnemyGun component not found on the enemy.");
+        }
+
+    }
     public override void EnterState()
     {
         Debug.Log("Entering Shoot State");
@@ -27,8 +36,11 @@ public class ShootState : EnemyState
 
         if (Time.time - lastShootTime >= shootCooldown)
         {
-            Shoot();
-            lastShootTime = Time.time;
+            if (enemyGun != null)
+            {
+                enemyGun.Shoot();
+                lastShootTime = Time.time;
+            }
         }
 
         if (stateController.Health <= 30f)
@@ -42,14 +54,14 @@ public class ShootState : EnemyState
     private void Shoot()
     {
         Debug.Log("Enemy shoots at the player!");
-        // Add shooting logic here
+
     }
 
     public override void ExitState()
     {
         Debug.Log("Exiting Shoot State");
-       // stateController.NavAgent.isStopped = false; // Resume movement
-      //  stateController.TransitionToState(new RunState(stateController)); // Transition back to Run state
+        // stateController.NavAgent.isStopped = false; // Resume movement
+        //  stateController.TransitionToState(new RunState(stateController)); // Transition back to Run state
 
     }
 }

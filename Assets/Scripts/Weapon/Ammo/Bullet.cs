@@ -14,6 +14,8 @@ public abstract class Bullet : MonoBehaviour
     private EnemyStateController enemyStateController;
     private PlayerController playerController;
 
+    public bool isEnemyBullet = false; // Flag to differentiate between player and enemy bullets
+
 
     public float gravity = 9.81f;
     public float drag = 0.01f;
@@ -54,6 +56,14 @@ public abstract class Bullet : MonoBehaviour
         {
             HandleGroundCollision(collision);
         }
+        else if (collision.gameObject.CompareTag("Player"))
+        {
+            HandleCollision(collision); // Handle player collision
+        }
+        // else if (collision.gameObject.CompareTag("Target"))
+        // {
+        //     HandleCollision(collision); // Handle target collision
+        // }
         else
         {
             HandleCollision(collision); // Default behavior for other tags
@@ -129,6 +139,27 @@ public abstract class Bullet : MonoBehaviour
             Instantiate(impactEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         }
     }
+
+    protected void HandlePlayerCollision(Collision collision)
+    {
+        // Apply damage to the player
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.TakeDamage(damage);
+            Debug.Log($"Hit player: {collision.gameObject.name}, Damage: {damage}");
+        }
+
+        // Instantiate blood effect
+        // if (bloodEffect != null)
+        // {
+        //     Instantiate(bloodEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
+        // }
+
+        // Destroy the bullet
+        Destroy(gameObject);
+    }
+
 
     protected void HandleCollision(Collision collision)
     {

@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Player is dead!");
             // Add logic for player death (e.g., game over screen)
+
         }
     }
 
