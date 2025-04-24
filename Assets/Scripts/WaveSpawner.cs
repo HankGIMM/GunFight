@@ -32,10 +32,12 @@ public class WaveSpawner : MonoBehaviour
         isSpawning = true;
 
         waveText.text = "Wave " + currentWave; // Update the wave text
+        Debug.Log($"Spawning wave {currentWave} with {enemyCount} enemies.");
 
-        if (currentWave == totalWaves)
+        if (currentWave - 1 < 0 || currentWave - 1 >= enemyPrefabs.Length)
         {
-            enemyCount = 1; // Only one enemy should spawn during the final wave
+            Debug.LogError($"Invalid enemy prefab index: {currentWave - 1}. Ensure enemyPrefabs array is properly configured.");
+            yield break; // Exit the coroutine to prevent further errors
         }
 
         for (int i = 0; i < enemyCount; i++)
@@ -68,6 +70,11 @@ public class WaveSpawner : MonoBehaviour
             currentWave++;
             yield return new WaitForSeconds(timeBetweenWaves);
             StartCoroutine(SpawnWave(startingEnemies + currentWave - 1)); // Increase enemy count for each wave
+        }
+        else
+        {
+            waveText.text = "All Waves Completed!"; // Update the wave text when all waves are completed
+            Debug.Log("All waves completed!");
         }
     }
 
@@ -103,11 +110,26 @@ public class WaveSpawner : MonoBehaviour
         Instantiate(enemyPrefabs[currentWave - 1], spawnPoint.position, spawnPoint.rotation);
     }
 
+    public void RemoveEnemy(GameObject enemy)
+    {
+        GameObject rootObject = enemy.transform.root.gameObject; // Get the root object of the enemy
+        if (spawnedEnemies.Contains(rootObject))
+        {
+            spawnedEnemies.Remove(rootObject);
+            Debug.Log($"Enemy removed. Remaining enemies: {spawnedEnemies.Count}");
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to remove an enemy that is not in the list.");
+        }
+    }
+
     // Check if all spawned enemies are destroyed
     public bool AreAllEnemiesDestroyed()
     {
         // Remove any null entries (destroyed enemies) from the list
         spawnedEnemies.RemoveAll(enemy => enemy == null);
+        Debug.Log($"Enemies remaining: {spawnedEnemies.Count}");
         return spawnedEnemies.Count == 0;
     }
     // void Update()

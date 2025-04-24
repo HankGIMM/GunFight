@@ -8,8 +8,10 @@ public class Gun : Weapon
     public float bulletSpeed = 1000.0f;
     public float bulletDamage = 81.0f;
 
-    //buulet spread
+    //bullet spread
     public float bulletSpread;
+    public float defaultBulletSpread = 0.1f;
+    public float adsBulletSpread = 0.02f;
 
     // Fire modes
     public enum FireMode { Single, Burst, Automatic }
@@ -79,14 +81,28 @@ public class Gun : Weapon
             StartCoroutine(AutomaticFire());
         }
 
+        // Handle ADS (Aim Down Sights)
+        if (Input.GetMouseButton(1)) // Right mouse button
+        {
+            isAiming = true;
+            bulletSpread = adsBulletSpread;
+            AimDownSights();
+        }
+        else
+        {
+            isAiming = false;
+            bulletSpread = defaultBulletSpread;
+            ReturnToDefaultPosition();
+        }
+
     }
 
     public override void Shoot()
     {
-       if (isShooting) return; // Prevent overlapping shooting
+        if (isShooting) return; // Prevent overlapping shooting
         isShooting = true;
 
-        
+
         if (bulletPrefab == null)
         {
             Debug.LogError("Bullet prefab is not assigned.");

@@ -18,7 +18,14 @@ public class DieState : EnemyState
     private IEnumerator DestroyAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        GameObject.Destroy(stateController.gameObject);
+
+        WaveSpawner waveSpawner = Object.FindObjectOfType<WaveSpawner>();
+        if (waveSpawner != null)
+        {
+            waveSpawner.RemoveEnemy(stateController.gameObject);
+        }
+
+        GameObject.Destroy(stateController.gameObject.transform.root.gameObject); // Destroy the enemy object
     }
     public override void UpdateState()
     {
