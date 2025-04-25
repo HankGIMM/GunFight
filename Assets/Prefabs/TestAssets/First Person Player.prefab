@@ -255,7 +255,7 @@ MonoBehaviour:
   mouseSensitivity: 2
   playerCamera: {fileID: 105316952943879212}
   interactionDistance: 5
-  equippedWeapon: {fileID: 4166551670809703947}
+  equippedWeapon: {fileID: 0}
   gravity: -25
   jumpHeight: 2
   groundCheck: {fileID: 3870200584472254240}
@@ -288,14 +288,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6681528233498982246}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -0.615, y: -0.377, z: 1.383}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7818304663113963273}
   m_Father: {fileID: 105316952943879212}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &6689347838106428594
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ Transform:
   m_GameObject: {fileID: 6689347838106428594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.655, y: 0.189, z: -0.643}
+  m_LocalPosition: {x: -0.576, y: 0.18, z: 0.441}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -383,6 +383,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1766698669796984873, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3943030942292403971, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
       propertyPath: m_Name
       value: AssultRiflePrefab
@@ -408,6 +412,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8439218976419848007}
     - target: {fileID: 4483026742248216724, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 6980926193898011584}
+    - target: {fileID: 4911647643002170265, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: adsPosition
+      value: 
+      objectReference: {fileID: 7818304663113963273}
+    - target: {fileID: 4911647643002170265, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 105316952943879212}
+    - target: {fileID: 4911647643002170265, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: defaultPosition
+      value: 
+      objectReference: {fileID: 8439218976419848007}
+    - target: {fileID: 4911647643002170265, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+      propertyPath: bulletSpawnPoint
+      value: 
+      objectReference: {fileID: 4206230598866337620}
+    - target: {fileID: 4911647643002170265, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 6980926193898011584}
@@ -465,6 +489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1090375279351789466, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+    - {fileID: 1766698669796984873, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -573,17 +598,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4166551670809703947 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 919797970988654994, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
+--- !u!4 &4206230598866337620 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1103064955047192781, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
   m_PrefabInstance: {fileID: 3823934087082235801}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dd034f9ec1af4982893bc9c377185a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &9135222822405356638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5464980757724818375, guid: 436555872b52177458c98ad8dde01ca8, type: 3}
