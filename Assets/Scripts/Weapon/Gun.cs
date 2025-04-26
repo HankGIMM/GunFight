@@ -53,6 +53,8 @@ public class Gun : Weapon
         if (playerCamera != null)
         {
             originalCameraRotation = playerCamera.localEulerAngles;
+
+            
         }
     }
 
@@ -70,7 +72,7 @@ public class Gun : Weapon
             if (currentFireMode == FireMode.Single && !isShooting)
             {
                 Shoot();
-                ApplyRecoil();
+                
             }
             else if (currentFireMode == FireMode.Burst && !isShooting)
             {
@@ -81,6 +83,11 @@ public class Gun : Weapon
         if (currentFireMode == FireMode.Automatic && Input.GetMouseButton(0) && !isShooting)
         {
             StartCoroutine(AutomaticFire());
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isShooting = false; // Reset shooting state when the button is released
         }
 
         // Handle ADS (Aim Down Sights)
@@ -101,8 +108,8 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
-        if (isShooting) return; // Prevent overlapping shooting
-        isShooting = true;
+        // if (isShooting) return; // Prevent overlapping shooting
+        // isShooting = true;
 
 
         if (bulletPrefab == null)
@@ -144,7 +151,8 @@ public class Gun : Weapon
             Debug.LogWarning("Shoot sound is not assigned.");
         }
 
-        isShooting = false; // Reset shooting state after shoot
+        // isShooting = false; // Reset shooting state after shoot
+        ApplyRecoil();
     }
     private Vector3 CalculateSpreadDirection()
     {

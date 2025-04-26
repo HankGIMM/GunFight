@@ -15,6 +15,10 @@ public class EnemyStateController : MonoBehaviour
     public float RunSpeed = 3.5f;
     public Transform CoverPoint;
 
+    public EnemyGun enemyGun; // Reference to the enemy's gun
+
+    
+
     [HideInInspector]
     public NavMeshAgent NavAgent;
 
@@ -22,6 +26,14 @@ public class EnemyStateController : MonoBehaviour
 
     private void Start()
     {
+        if (enemyGun == null)
+        {
+            enemyGun = GetComponent<EnemyGun>(); // Get the enemy's gun component
+            if (enemyGun == null)
+            {
+                Debug.LogError("EnemyGun component not found on the enemy.");
+            }
+        }
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         if (Player == null)
         {

@@ -12,7 +12,7 @@ public class ShootState : EnemyState
 
     public ShootState(EnemyStateController controller) : base(controller)
     {
-        enemyGun = controller.GetComponent<EnemyGun>(); // Get the enemy's gun component
+        enemyGun = controller.GetComponentInChildren<EnemyGun>(); // Get the enemy's gun component
         if (enemyGun == null)
         {
             Debug.LogError("EnemyGun component not found on the enemy.");
