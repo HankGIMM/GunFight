@@ -8,6 +8,14 @@ public class Gun : Weapon
     public float bulletSpeed = 1000.0f;
     public float bulletDamage = 81.0f;
 
+    // Ammo system
+    public int currentAmmo = 30; // Current ammo in the magazine
+    public int totalAmmo = 90; // Total ammo available
+    public int magazineSize = 30; // Maximum ammo in a magazine
+    public float reloadTime = 2f; // Time it takes to reload
+    private bool isReloading = false;
+    //public event Action<int, int> OnAmmoChanged; // Event to notify ammo changes
+
     //bullet spread
     public float bulletSpread;
     public float defaultBulletSpread = 0.1f;
@@ -39,6 +47,8 @@ public class Gun : Weapon
     //camera recoil
     public CameraRecoil cameraRecoil;
 
+
+
     private void Start()
     {
         transform.localRotation = Quaternion.identity; // Reset local rotation to (0, 0, 0)
@@ -54,12 +64,20 @@ public class Gun : Weapon
         {
             originalCameraRotation = playerCamera.localEulerAngles;
 
-            
+
         }
     }
 
     private void Update()
     {
+        if (isReloading)
+            return; // Prevent shooting while reloading
+
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < magazineSize && totalAmmo > 0)
+        {
+            StartCoroutine(Reload());
+        }
+
         // Cycle fire modes with the "F" key
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -72,7 +90,7 @@ public class Gun : Weapon
             if (currentFireMode == FireMode.Single && !isShooting)
             {
                 Shoot();
-                
+
             }
             else if (currentFireMode == FireMode.Burst && !isShooting)
             {
@@ -108,9 +126,17 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
-        // if (isShooting) return; // Prevent overlapping shooting
-        // isShooting = true;
+        if (isReloading)
+            return;
 
+        if (currentAmmo <= 0)
+        {
+            Debug.Log("Out of ammo! Reload!");
+            return;
+        }
+
+        currentAmmo--; // Decrease current ammo
+        Debug.Log($"Shot fired! Ammo left: {currentAmmo}/{totalAmmo}");
 
         if (bulletPrefab == null)
         {
@@ -153,6 +179,22 @@ public class Gun : Weapon
 
         // isShooting = false; // Reset shooting state after shoot
         ApplyRecoil();
+    }
+
+    //reload
+    private IEnumerator Reload()
+    {
+        isReloading = true;
+        Debug.Log("Reloading...");
+
+        yield return new WaitForSeconds(reloadTime);
+
+        int ammoToReload = Mathf.Min(magazineSize - currentAmmo, totalAmmo);
+        currentAmmo += ammoToReload;
+        totalAmmo -= ammoToReload;
+
+        Debug.Log($"Reloaded! Ammo: {currentAmmo}/{totalAmmo}");
+        isReloading = false;
     }
     private Vector3 CalculateSpreadDirection()
     {

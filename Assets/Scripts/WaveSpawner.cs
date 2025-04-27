@@ -14,7 +14,7 @@ public class WaveSpawner : MonoBehaviour
     public float timeBetweenWaves = 10f; // Time between waves in seconds
     public float timeBetweenSpawns = 1f; // Time between individual spawns in a wave
     public float spawnRadius = 5f;      // Radius around spawn points to spawn enemies
-    private bool isSpawning = false;  // Is a wave currently spawning
+    public bool isSpawning = false;  // Is a wave currently spawning
 
     private List<GameObject> spawnedEnemies = new List<GameObject>(); // List of spawned enemies
 

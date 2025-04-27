@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Required for scene management
 
 public class GameManager : MonoBehaviour
 {
     public WaveSpawner waveSpawner;
     public PlayerController playerController;
 
-    public SceneManager sceneManager; // Reference to the SceneManager script
+    public GameSceneManager sceneManager; // Reference to the SceneManager script
 
     private bool gameOver = false;
 
