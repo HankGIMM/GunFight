@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Gun : Weapon
 {
@@ -44,8 +45,13 @@ public class Gun : Weapon
 
     private AudioSource audioSource;
 
+    public AudioClip reloadSound;
+
     //camera recoil
     public CameraRecoil cameraRecoil;
+
+    //muzzle flash
+    public ParticleSystem muzzleFlash;
 
 
 
@@ -65,6 +71,10 @@ public class Gun : Weapon
             originalCameraRotation = playerCamera.localEulerAngles;
 
 
+        }
+        if (muzzleFlash == null)
+        {
+            Debug.LogWarning("Muzzle flash particle system is not assigned.");
         }
     }
 
@@ -126,6 +136,8 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
+        if (PauseMenu.IsGamePaused) return; // Prevent shooting when the game is paused
+
         if (isReloading)
             return;
 
@@ -148,6 +160,12 @@ public class Gun : Weapon
         {
             Debug.LogError("Bullet spawn point is not assigned.");
             return;
+        }
+
+        // Play muzzle flash particle system
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
         }
 
         // Calculate bullet direction with spread
@@ -186,6 +204,15 @@ public class Gun : Weapon
     {
         isReloading = true;
         Debug.Log("Reloading...");
+
+        if (reloadSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(reloadSound);
+        }
+        else
+        {
+            Debug.LogWarning("Reload sound is not assigned or AudioSource is missing.");
+        }
 
         yield return new WaitForSeconds(reloadTime);
 

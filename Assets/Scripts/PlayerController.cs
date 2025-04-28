@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseMenu.IsGamePaused) return; // Skip update if the game is paused
+        
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMouseLook()
     {
+        if (PauseMenu.IsGamePaused) return; // Skip mouse look if the game is paused
         // Get mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;

@@ -8,7 +8,8 @@ using UnityEngine.UI; // Required for UI elements
 
 public class PauseMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static bool IsGamePaused = false; // Static variable to track if the game is paused
+
     public GameObject pauseMenuUI; // Reference to the pause menu UI
 
     public GameObject playerHUD; // Reference to the PlayerHUD UI
@@ -50,6 +51,12 @@ public class PauseMenu : MonoBehaviour
         playerHUD.SetActive(true); // Show the PlayerHUD when resuming
         Time.timeScale = 1f; // Resume game time
         isPaused = false;
+        IsGamePaused = false; // Update the static variable
+
+        AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.defaultSnapshot, 0.5f); // Resume gameplay music
+
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
+        Cursor.visible = false; // Hide the cursor
     }
 
     public void Pause()
@@ -58,6 +65,9 @@ public class PauseMenu : MonoBehaviour
         playerHUD.SetActive(false); // Hide the PlayerHUD when paused
         Time.timeScale = 0f; // Pause game time
         isPaused = true;
+        IsGamePaused = true; // Update the static variable
+
+        AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.pausedSnapshot, 0.5f);
 
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true; // Show the cursor
@@ -68,6 +78,7 @@ public class PauseMenu : MonoBehaviour
 
         Debug.Log("Restarting the game...");
         Time.timeScale = 1f; // Ensure game time is resumed
+        IsGamePaused = false; // Update the static variable
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
     }
 
@@ -75,6 +86,7 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Returning to the title screen...");
         Time.timeScale = 1f; // Ensure game time is resumed
+        IsGamePaused = false; // Update the static variable
         SceneManager.LoadScene("TitleScreen"); // Load the title screen
     }
 }

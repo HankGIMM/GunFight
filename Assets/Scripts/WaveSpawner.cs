@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement; // Required for scene management
+using UnityEngine.Audio; // Required for audio management
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class WaveSpawner : MonoBehaviour
     public GameObject[] enemyPrefabs;     // The enemy prefab to spawn
     public Transform[] spawnPoints;    // An array of spawn points
     public int startingEnemies = 5;    // Number of enemies in the first wave
-    public float timeBetweenWaves = 10f; // Time between waves in seconds
+    public float timeBetweenWaves = 15f; // Time between waves in seconds
     public float timeBetweenSpawns = 1f; // Time between individual spawns in a wave
     public float spawnRadius = 5f;      // Radius around spawn points to spawn enemies
     public bool isSpawning = false;  // Is a wave currently spawning
@@ -20,16 +22,34 @@ public class WaveSpawner : MonoBehaviour
 
     public TextMeshProUGUI waveText; // Text to display the current wave number
 
+    [Header("Audio Clips")]
+    public AudioClip waveMusic; // music to play when spawning enemies
+    public AudioClip betweenWavesMusic; // music to play between waves
+
 
 
     void Start()
     {
+        if (betweenWavesMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(betweenWavesMusic); // Play the music between waves
+        }
+        if (waveMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(waveMusic); // Play the music when spawning enemies
+        }
+
         StartCoroutine(SpawnWave(startingEnemies));
     }
 
     IEnumerator SpawnWave(int enemyCount)
     {
         isSpawning = true;
+
+       if (waveMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(waveMusic); // Play the music when spawning enemies
+        }
 
         waveText.text = "Wave " + currentWave; // Update the wave text
         Debug.Log($"Spawning wave {currentWave} with {enemyCount} enemies.");
@@ -63,6 +83,11 @@ public class WaveSpawner : MonoBehaviour
 
         // Wait until all enemies are destroyed before starting the next wave
         yield return new WaitUntil(AreAllEnemiesDestroyed);
+
+        if (betweenWavesMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(betweenWavesMusic); // Play the music between waves
+        }
 
         // Start the next wave if there are more waves to spawn
         if (currentWave < totalWaves)

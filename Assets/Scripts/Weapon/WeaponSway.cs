@@ -12,7 +12,6 @@ public class WeaponSway : MonoBehaviour
 
     void Start()
     {
-        initialRotation = Quaternion.Euler(0f, 180f, 0f); // Ensure the gun starts facing forward
         initialRotation = transform.localRotation;
         Debug.Log($"Initial Gun Rotation:  {initialRotation.eulerAngles}");
     }

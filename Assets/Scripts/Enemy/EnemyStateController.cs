@@ -17,7 +17,7 @@ public class EnemyStateController : MonoBehaviour
 
     public EnemyGun enemyGun; // Reference to the enemy's gun
 
-    
+
 
     [HideInInspector]
     public NavMeshAgent NavAgent;
@@ -48,6 +48,22 @@ public class EnemyStateController : MonoBehaviour
     {
         if (isDead) return; // Prevent updates if already dead
         CurrentState?.UpdateState();
+    }
+
+    private void FacePlayer()
+    {
+        if (Player == null) return;
+
+        // Calculate the direction to the player
+        Vector3 directionToPlayer = Player.position - transform.position;
+        directionToPlayer.y = 0; // Keep the rotation on the horizontal plane
+
+        // Rotate the enemy to face the player
+        if (directionToPlayer != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Smooth rotation
+        }
     }
 
     public void TransitionToState(EnemyState newState)

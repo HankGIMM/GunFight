@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; // Required for scene management
+using TMPro; // Required for TextMeshPro
+using UnityEngine.UI; // Required for UI elements
+
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +15,10 @@ public class GameManager : MonoBehaviour
 
     private bool gameOver = false;
 
+    private void Start()
+    {
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.gameplayMusic); // Play gameplay music
+    }
     private void Update()
     {
         if (gameOver)
@@ -24,6 +31,10 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("All waves complete! You win!");
             gameOver = true;
+
+             // Transition to victory snapshot
+            AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.victorySnapshot, 1.0f);
+
             sceneManager.ReturnToTitle(); // Return to the title screen
         }
 
@@ -31,7 +42,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Player is dead! Game Over!");
             gameOver = true;
-            sceneManager.RestartScene(); // Restart the current scene
+            // sceneManager.RestartScene(); // Restart the current scene
+
+            // Transition to game over snapshot
+            AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.gameOverSnapshot, 1.0f);
+
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.gameOverMusic); // Play game over music
         }
     }
 }

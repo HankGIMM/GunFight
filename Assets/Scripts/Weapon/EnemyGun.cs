@@ -6,7 +6,7 @@ public class EnemyGun : Weapon
 {
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
-    public float bulletSpeed = 500f;
+    public float bulletSpeed = 800f;
     public float bulletDamage = 20f;
 
     public override void Shoot()

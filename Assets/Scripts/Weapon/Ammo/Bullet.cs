@@ -172,20 +172,7 @@ public abstract class Bullet : MonoBehaviour
         // Play sound based on tag
         if (tagToAudioClip.TryGetValue(collision.gameObject.tag, out AudioClip clip))
         {
-            GameObject audioSourceObject = new GameObject("RicochetSound");
-            audioSourceObject.transform.position = collision.contacts[0].point;
-
-            AudioSource audioSource = audioSourceObject.AddComponent<AudioSource>();
-            audioSource.clip = clip;
-            audioSource.playOnAwake = false;
-            audioSource.spatialBlend = 1.0f; // 3D sound
-            audioSource.minDistance = 1f;
-            audioSource.maxDistance = 50f;
-
-            audioSource.Play();
-
-            // Destroy the audio source after 1 second
-            Destroy(audioSourceObject, 1.0f);
+            AudioManager.Instance.PlaySFX(clip);
         }
     }
 

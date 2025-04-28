@@ -79,6 +79,7 @@ MonoBehaviour:
   rb: {fileID: 7591757851095879408}
   impactEffect: {fileID: 0}
   bloodEffect: {fileID: 0}
+  isEnemyBullet: 0
   gravity: 9.81
   drag: 0.01
 --- !u!96 &5641556410357091892
