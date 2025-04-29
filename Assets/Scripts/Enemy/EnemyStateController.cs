@@ -50,7 +50,7 @@ public class EnemyStateController : MonoBehaviour
         CurrentState?.UpdateState();
     }
 
-    private void FacePlayer()
+    public void FacePlayer()
     {
         if (Player == null) return;
 

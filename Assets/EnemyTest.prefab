@@ -135,8 +135,8 @@ Transform:
   m_GameObject: {fileID: 3460766025306841805}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.40627, y: -0.04, z: 0.0083699}
+  m_LocalScale: {x: 1.5303, y: 1.5303, z: 1.5303}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 389206132368453211}
@@ -158,8 +158,8 @@ MonoBehaviour:
   Player: {fileID: 0}
   Health: 100
   DetectionRange: 500
-  ShootingRange: 50
-  RunSpeed: 8
+  ShootingRange: 100
+  RunSpeed: 25
   CoverPoint: {fileID: 0}
   enemyGun: {fileID: 3318577136241409321}
   NavAgent: {fileID: 0}
@@ -242,19 +242,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -262,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -275,6 +275,22 @@ PrefabInstance:
     - target: {fileID: 4270049818294310251, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_Name
       value: EnemyGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662623074004068564, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662623074004068564, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5827835288925664860, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5827835288925664860, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

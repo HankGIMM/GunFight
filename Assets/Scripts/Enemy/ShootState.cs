@@ -34,6 +34,9 @@ public class ShootState : EnemyState
             return;
         }
 
+        // Face the player
+        stateController.FacePlayer();
+
         if (Time.time - lastShootTime >= shootCooldown)
         {
             if (enemyGun != null)
