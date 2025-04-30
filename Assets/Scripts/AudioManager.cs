@@ -30,6 +30,10 @@ public class AudioManager : MonoBehaviour
     public AudioMixerSnapshot gameOverSnapshot; // Game over state
     public AudioMixerSnapshot victorySnapshot; // Victory state
 
+    private Dictionary<string, List<AudioClip>> tagToAudioClips = new Dictionary<string, List<AudioClip>>();
+
+
+
     private void Awake()
     {
         // Ensure only one instance of AudioManager exists
@@ -42,6 +46,12 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // Load audio clips for ricochet sounds
+        LoadAudioClipsForTag("Wall", "Audio/SFX/Ricochet/Wall/");
+        LoadAudioClipsForTag("Ground", "Audio/SFX/Ricochet/Ground/");
+        LoadAudioClipsForTag("Enemy", "Audio/SFX/Ricochet/Enemy/");
+        LoadAudioClipsForTag("Player", "Audio/SFX/Ricochet/Player/");
     }
 
     public void PlayMusic(AudioClip clip, float volume = 1f, float fadeDuration = 1f)
@@ -60,9 +70,36 @@ public class AudioManager : MonoBehaviour
         musicSource.Stop();
     }
 
-    public void PlaySFX(AudioClip clip, float volume = 1f)
+    public void PlaySFX(AudioClip clip, float volume = 1f, Vector3? position = null)
     {
-        sfxSource.PlayOneShot(clip, volume);
+        if (clip == null)
+        {
+            Debug.LogWarning("Attempted to play a null AudioClip.");
+            return;
+        }
+        if (position.HasValue)
+        {
+            // Create a temporary GameObject for 3D sound
+            GameObject audioObject = new GameObject("SFX_3D");
+            audioObject.transform.position = position.Value;
+
+            AudioSource audioSource = audioObject.AddComponent<AudioSource>();
+            audioSource.clip = clip;
+            audioSource.volume = volume;
+            audioSource.spatialBlend = 1.0f; // 3D sound
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 50f;
+
+            audioSource.Play();
+            Destroy(audioObject, clip.length);
+        }
+        else
+        {
+            // Play 2D sound
+            sfxSource.PlayOneShot(clip, volume);
+        }
+
     }
 
     public void PlayAmbient(AudioClip clip, float volume = 1f)
@@ -130,6 +167,36 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Snapshot is null. Cannot transition.");
+        }
+    }
+
+    private void LoadAudioClipsForTag(string tag, string folderPath)
+    {
+        AudioClip[] clips = Resources.LoadAll<AudioClip>(folderPath);
+        if (clips.Length > 0)
+        {
+            tagToAudioClips[tag] = new List<AudioClip>(clips);
+            Debug.Log($"Loaded {clips.Length} audio clips for tag: {tag} from folder: {folderPath}");
+        }
+        else
+        {
+            Debug.LogError($"No audio clips found in folder: {folderPath} for tag: {tag}");
+        }
+    }
+
+    public void PlayRicochetSound(Vector3 position, string tag)
+    {
+        if (tagToAudioClips.TryGetValue(tag, out List<AudioClip> clips) && clips.Count > 0)
+        {
+            // Randomly select an audio clip
+            AudioClip clip = clips[Random.Range(0, clips.Count)];
+
+            // Use AudioManager to play the sound
+            AudioManager.Instance.PlaySFX(clip, 1f);
+        }
+        else
+        {
+            Debug.LogWarning($"No audio clips available for tag: {tag}");
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement; // Required for scene management
 public class GameSceneManager : MonoBehaviour
 {
     public string mainSceneName = "Main"; // Name of the main scene to load
-    public string titleSceneName = "TitleScreen"; // Name of the title screen scene
+    public string titleSceneName = "Title"; // Name of the title screen scene
 
     // Method to start the game
     public void StartGame()

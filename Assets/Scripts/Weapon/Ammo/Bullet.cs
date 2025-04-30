@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 public abstract class Bullet : MonoBehaviour
 {
@@ -14,13 +15,13 @@ public abstract class Bullet : MonoBehaviour
     private EnemyStateController enemyStateController;
     private PlayerController playerController;
 
+
     public bool isEnemyBullet = false; // Flag to differentiate between player and enemy bullets
 
 
     public float gravity = 9.81f;
     public float drag = 0.01f;
 
-    public Dictionary<string, AudioClip> tagToAudioClip = new Dictionary<string, AudioClip>();
     public abstract void Initialize(Vector3 direction);
 
     protected virtual void Start()
@@ -29,21 +30,13 @@ public abstract class Bullet : MonoBehaviour
         rb.useGravity = false; //gravity handled elsewhere 
         StartCoroutine(ApplyPhysics());
         StartCoroutine(DespawnAfterTime(3.0f));
-
-        tagToAudioClip.Add("Wall", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetWall"));
-        tagToAudioClip.Add("Target", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetTarget"));
-        tagToAudioClip.Add("Ground", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetGround"));
-        tagToAudioClip.Add("Enemy", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetEnemy"));
-        tagToAudioClip.Add("Player", Resources.Load<AudioClip>("Assets/Audio/SFX/RicochetPlayer"));
     }
-
-
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Bullet collided with: {collision.gameObject.name}");
+        Debug.Log($"Bullet collided with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
 
-        
+
         if (collision.gameObject.CompareTag("Enemy"))
         {
             HandleEnemyCollision(collision);
@@ -86,6 +79,8 @@ public abstract class Bullet : MonoBehaviour
             Instantiate(bloodEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         }
 
+        // Play ricochet sound
+        PlayRicochetSound(collision.contacts[0].point, collision.gameObject.tag);
         // Destroy the bullet
         Destroy(gameObject);
     }
@@ -108,11 +103,16 @@ public abstract class Bullet : MonoBehaviour
             rb.useGravity = true; // Enable gravity to make the bullet fall
         }
 
+        // Play ricochet sound
+        PlayRicochetSound(collision.contacts[0].point, collision.gameObject.tag);
         // Optional: Play impact effect
         if (impactEffect != null)
         {
             Instantiate(impactEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         }
+
+
+
     }
 
     private void HandleGroundCollision(Collision collision) //Energy Based Richochet - 
@@ -133,6 +133,9 @@ public abstract class Bullet : MonoBehaviour
             rb.useGravity = true;
         }
 
+        // Play ricochet sound
+        PlayRicochetSound(collision.contacts[0].point, collision.gameObject.tag);
+
         // Optional: Play impact effect
         if (impactEffect != null)
         {
@@ -149,6 +152,9 @@ public abstract class Bullet : MonoBehaviour
             player.TakeDamage(damage);
             Debug.Log($"Hit player: {collision.gameObject.name}, Damage: {damage}");
         }
+
+        //play ricochet sound
+        PlayRicochetSound(collision.contacts[0].point, collision.gameObject.tag);
 
         // Instantiate blood effect
         // if (bloodEffect != null)
@@ -170,10 +176,7 @@ public abstract class Bullet : MonoBehaviour
         }
 
         // Play sound based on tag
-        if (tagToAudioClip.TryGetValue(collision.gameObject.tag, out AudioClip clip))
-        {
-            AudioManager.Instance.PlaySFX(clip);
-        }
+        PlayRicochetSound(collision.contacts[0].point, collision.gameObject.tag);
     }
 
     private IEnumerator ApplyPhysics()
@@ -200,4 +203,9 @@ public abstract class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void PlayRicochetSound(Vector3 position, string tag)
+    {
+        // Delegate ricochet sound playback to the AudioManager
+        AudioManager.Instance.PlayRicochetSound(position, tag);
+    }
 }
