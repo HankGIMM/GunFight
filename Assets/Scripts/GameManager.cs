@@ -8,13 +8,30 @@ using UnityEngine.UI; // Required for UI elements
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance; // Singleton instance
     public WaveSpawner waveSpawner;
     public PlayerController playerController;
-
+    public GameOverUI gameOverUI; // Reference to the GameOverUI script
+    public PlayerHUD playerHUD; // Reference to the PlayerHUD script
+    
     public GameSceneManager sceneManager; // Reference to the SceneManager script
 
-    private bool gameOver = false;
+    public bool gameOver = false;
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this; // Set the singleton instance
+            DontDestroyOnLoad(gameObject); // Keep this object across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+        }
+
+        DontDestroyOnLoad(gameObject); // Keep this object across scenes
+    }
     private void Start()
     {
         AudioManager.Instance.PlayMusic(AudioManager.Instance.gameplayMusic); // Play gameplay music
@@ -32,22 +49,49 @@ public class GameManager : MonoBehaviour
             Debug.Log("All waves complete! You win!");
             gameOver = true;
 
-             // Transition to victory snapshot
-            AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.victorySnapshot, 1.0f);
+            if (playerHUD != null)
+            {
+                playerHUD.gameObject.SetActive(false); // Hide the PlayerHUD
+            }
+            else
+            {
+                Debug.LogError("PlayerHUD is not assigned in the Inspector.");
+            }
 
-            sceneManager.ReturnToTitle(); // Return to the title screen
+            // Show the victory screen
+            if (gameOverUI != null)
+            {
+                gameOverUI.ShowWinScreen();
+            }
+            else
+            {
+                Debug.LogError("GameOverUI is not assigned in the Inspector.");
+            }
         }
 
+        // Check for lose condition
         if (playerController.Health <= 0)
         {
             Debug.Log("Player is dead! Game Over!");
             gameOver = true;
-            // sceneManager.RestartScene(); // Restart the current scene
 
-            // Transition to game over snapshot
-            AudioManager.Instance.TransitionToSnapshot(AudioManager.Instance.gameOverSnapshot, 1.0f);
+            if (playerHUD != null)
+            {
+                playerHUD.gameObject.SetActive(false); // Hide the PlayerHUD
+            }
+            else
+            {
+                Debug.LogError("PlayerHUD is not assigned in the Inspector.");
+            }
 
-            AudioManager.Instance.PlayMusic(AudioManager.Instance.gameOverMusic); // Play game over music
+            if (gameOverUI != null)
+            {
+                gameOverUI.ShowLoseScreen();
+            }
+            else
+            {
+                Debug.LogError("GameOverUI is not assigned in the Inspector.");
+            }
         }
     }
 }

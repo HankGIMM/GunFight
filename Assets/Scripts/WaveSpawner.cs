@@ -21,12 +21,11 @@ public class WaveSpawner : MonoBehaviour
     private List<GameObject> spawnedEnemies = new List<GameObject>(); // List of spawned enemies
 
     public TextMeshProUGUI waveText; // Text to display the current wave number
+    //public GameManager GameManager; // Reference to the GameManager script
 
     [Header("Audio Clips")]
     public AudioClip waveMusic; // music to play when spawning enemies
     public AudioClip betweenWavesMusic; // music to play between waves
-
-
 
     void Start()
     {
@@ -99,7 +98,10 @@ public class WaveSpawner : MonoBehaviour
         else
         {
             waveText.text = "All Waves Completed!"; // Update the wave text when all waves are completed
-            Debug.Log("All waves completed!");
+            Debug.Log("All waves completed! inWaitUntil spawnWaveEnum debug");
+            // GameManager.Instance.gameOver = true; // Set game over in GameManager
+            // GameManager.Instance.gameOverUI.ShowWinScreen(); // Show the win screen
+            // Debug.Log("Game Over! You win! inWaitUntil spawnWaveEnum debug");
         }
     }
 
@@ -157,8 +159,22 @@ public class WaveSpawner : MonoBehaviour
         Debug.Log($"Enemies remaining: {spawnedEnemies.Count}");
         return spawnedEnemies.Count == 0;
     }
-    // void Update()
-    // {
 
-    // }
+
+//     void Update()
+//     {
+//         if (currentWave > totalWaves && AreAllEnemiesDestroyed())
+//         {
+//         Debug.Log("All waves completed! update debug");
+        
+//         if (GameManager.Instance?.gameOver != null)
+//         {
+//             GameManager.Instance.gameOverUI.ShowWinScreen(); // Set game over in GameManager
+//         }
+//         else
+//         {
+//             Debug.LogError("GameManager instance is null or gameOver reference is missing.");
+//         }
+//     }
+// }
 }
