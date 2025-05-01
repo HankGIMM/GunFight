@@ -5,14 +5,30 @@ using UnityEngine.SceneManagement; // Required for scene management
 
 public class GameSceneManager : MonoBehaviour
 {
+    public static GameSceneManager Instance; // Singleton instance
     public string mainSceneName = "Main"; // Name of the main scene to load
     public string titleSceneName = "Title"; // Name of the title screen scene
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this; // Set the singleton instance
+            //DontDestroyOnLoad(gameObject); // Keep this object across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+        }
+    }
 
     // Method to start the game
     public void StartGame()
     {
         Debug.Log("Starting the game...");
-        SceneManager.LoadScene(mainSceneName); // Load the main scene
+        Time.timeScale = 1f; // Ensure game time is resumed
+        AudioManager.Instance.ReloadAudioClips(); // Reload audio clips
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // Load the main scene
 
     }
 
@@ -31,13 +47,17 @@ public class GameSceneManager : MonoBehaviour
     public void ReturnToTitle()
     {
         Debug.Log("Returning to the title screen...");
-        SceneManager.LoadScene(titleSceneName); // Load the title screen scene
+        Time.timeScale = 1f; // Ensure game time is resumed
+        AudioManager.Instance.ReloadAudioClips(); // Reload audio clips
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1); // Load the title screen scene
     }
 
     // Method to restart the current scene
     public void RestartScene()
     {
         Debug.Log("Restarting the current scene...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        Time.timeScale = 1f; // Ensure game time is resumed
+        AudioManager.Instance.ReloadAudioClips(); // Reload audio clips
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the current scene
     }
 }

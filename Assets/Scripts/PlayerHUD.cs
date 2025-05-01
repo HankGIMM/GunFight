@@ -40,7 +40,7 @@ public class PlayerHUD : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.gameOver) return; // Stop updating if the game is over
+        if (GameManageController.Instance != null && GameManageController.Instance.gameOver) return; // Stop updating if the game is over
         UpdateAmmoUI();
         UpdateWaveInfoUI();
         UpdateHealthUI();

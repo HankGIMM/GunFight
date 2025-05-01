@@ -27,6 +27,9 @@ public class WaveSpawner : MonoBehaviour
     public AudioClip waveMusic; // music to play when spawning enemies
     public AudioClip betweenWavesMusic; // music to play between waves
 
+    [SerializeField] private GameManageController gameManager; // Reference to the GameManager script
+    [SerializeField] private GameManageController gameManager2;
+
     void Start()
     {
         if (betweenWavesMusic != null)
@@ -99,9 +102,11 @@ public class WaveSpawner : MonoBehaviour
         {
             waveText.text = "All Waves Completed!"; // Update the wave text when all waves are completed
             Debug.Log("All waves completed! inWaitUntil spawnWaveEnum debug");
+            gameManager.EndGame();
             // GameManager.Instance.gameOver = true; // Set game over in GameManager
             // GameManager.Instance.gameOverUI.ShowWinScreen(); // Show the win screen
             // Debug.Log("Game Over! You win! inWaitUntil spawnWaveEnum debug");
+
         }
     }
 

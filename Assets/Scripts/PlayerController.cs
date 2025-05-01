@@ -43,13 +43,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PauseMenu.IsGamePaused || GameManager.Instance.gameOver) return; // Skip update if the game is paused
+        if (PauseMenu.IsGamePaused || GameManageController.Instance.gameOver) return; // Skip update if the game is paused
         
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
         // HandleShooting();
-
+    
     }
 
     void HandleMouseLook()
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         if (Health <= 0)
         {
             Debug.Log("Player is dead!");
-            GameManager.Instance?.gameOverUI?.ShowLoseScreen(); // Notify player death
+            GameManageController.Instance?.gameOverUI?.ShowLoseScreen(); // Notify player death
 
         }
     }

@@ -181,7 +181,18 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogError($"No audio clips found in folder: {folderPath} for tag: {tag}");
+            
         }
+    }
+
+    public void ReloadAudioClips()
+    {
+        tagToAudioClips.Clear(); // Clear existing clips
+        LoadAudioClipsForTag("Wall", "Audio/SFX/Ricochet/Wall/");
+        LoadAudioClipsForTag("Ground", "Audio/SFX/Ricochet/Ground/");
+        LoadAudioClipsForTag("Enemy", "Audio/SFX/Ricochet/Enemy/");
+        LoadAudioClipsForTag("Player", "Audio/SFX/Ricochet/Player/");
+        Debug.Log("Reloaded audio clips for ricochet sounds.");
     }
 
     public void PlayRicochetSound(Vector3 position, string tag)
@@ -193,6 +204,7 @@ public class AudioManager : MonoBehaviour
 
             // Use AudioManager to play the sound
             AudioManager.Instance.PlaySFX(clip, 1f);
+            Debug.Log($"Playing ricochet sound for tag: {tag} at position: {position}");
         }
         else
         {

@@ -75,13 +75,13 @@ public class GameOverUI : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1f; // Resume the game
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        Debug.Log("Restarting the game...");
+        GameSceneManager.Instance.RestartScene(); // Call the centralized method
     }
 
     public void QuitToTitle()
     {
-        Time.timeScale = 1f; // Resume the game
-        SceneManager.LoadScene("TitleScreen"); // Load the title screen
+        Debug.Log("Returning to the title screen...");
+        GameSceneManager.Instance.ReturnToTitle();
     }
 }

@@ -18,6 +18,10 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
+        // Reassign references to ensure they are valid after a scene reload
+       // pauseMenuUI = GameObject.Find("PauseMenuUI"); // Replace with the actual name of your Pause Menu UI GameObject
+       // playerHUD = GameObject.Find("PlayerHUD"); // Replace with the actual name of your Player HUD GameObject
+
         if (pauseMenuUI == null)
         {
             Debug.LogError("PauseMenuUI is not assigned in the Inspector.");
@@ -77,16 +81,13 @@ public class PauseMenu : MonoBehaviour
     {
 
         Debug.Log("Restarting the game...");
-        Time.timeScale = 1f; // Ensure game time is resumed
-        IsGamePaused = false; // Update the static variable
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        GameSceneManager.Instance.RestartScene(); // Call the RestartScene method from GameSceneManager
+
     }
 
     public void QuitToTitle()
     {
         Debug.Log("Returning to the title screen...");
-        Time.timeScale = 1f; // Ensure game time is resumed
-        IsGamePaused = false; // Update the static variable
-        SceneManager.LoadScene("TitleScreen"); // Load the title screen
+        GameSceneManager.Instance.ReturnToTitle(); // Call the ReturnToTitle method from GameSceneManager
     }
 }
