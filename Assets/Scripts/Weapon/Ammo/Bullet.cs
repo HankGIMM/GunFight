@@ -16,7 +16,7 @@ public abstract class Bullet : MonoBehaviour
     private PlayerController playerController;
 
 
-    public bool isEnemyBullet = false; // Flag to differentiate between player and enemy bullets
+    //public bool isEnemyBullet = false; // Flag to differentiate between player and enemy bullets
 
 
     public float gravity = 9.81f;
@@ -145,12 +145,17 @@ public abstract class Bullet : MonoBehaviour
 
     protected void HandlePlayerCollision(Collision collision)
     {
-        // Apply damage to the player
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        // Search for the PlayerController in the collided object or its parents
+        PlayerController player = collision.gameObject.GetComponentInParent<PlayerController>();
         if (player != null)
         {
+            Debug.Log($"Bullet hit the player: {collision.gameObject.name}. Dealing {damage} damage.");
             player.TakeDamage(damage);
-            Debug.Log($"Hit player: {collision.gameObject.name}, Damage: {damage}");
+
+        }
+        else
+        {
+            Debug.LogWarning("PlayerController component not found on the player object.");
         }
 
         //play ricochet sound

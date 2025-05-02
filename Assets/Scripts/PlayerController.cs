@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private Interactable interactable;
 
     public float Health = 100f;
+    private bool isDead = false; // check if the player is dead
 
     void Start()
     {
@@ -44,12 +45,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (PauseMenu.IsGamePaused || GameManageController.Instance.gameOver) return; // Skip update if the game is paused
-        
+
         HandleMouseLook();
         HandleMovement();
         HandleInteraction();
         // HandleShooting();
-    
+
     }
 
     void HandleMouseLook()
@@ -100,29 +101,48 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactionDistance))
         {
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            Interactable newInteractable = hit.collider.GetComponent<Interactable>();
 
-            if (interactable != null)
+            if (newInteractable != null)
             {
                 // Highlight the interactable object
-                interactable.Highlight();
+                if (interactable != newInteractable)
+                {
+                    if (interactable != null)
+                    {
+                        interactable.Unhighlight(); // Unhighlight the previous interactable
+                    }
+
+                    interactable = newInteractable;
+                    interactable.Highlight(); // Highlight the new interactable
+                }
 
                 // Check if the player presses the interaction key
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    interactable.Interact();
+                    interactable.Interact(this); // Pass the PlayerController reference
                 }
             }
             else
             {
+                // Unhighlight the previous interactable if no interactable is detected
                 if (interactable != null)
                 {
                     interactable.Unhighlight();
                     interactable = null;
                 }
-
             }
         }
+        else
+        {
+            // Unhighlight the previous interactable if no raycast hit
+            if (interactable != null)
+            {
+                interactable.Unhighlight();
+                interactable = null;
+            }
+        }
+
     }
 
 
@@ -139,15 +159,22 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return; // Prevent taking damage if already dead
+
+        Debug.Log($"Player took {damage} damage. Current Health: {Health}");
         Health -= damage;
-        Debug.Log($"Player took {damage} damage. Remaining Health: {Health}");
+
 
         if (Health <= 0)
         {
+            Health = 0; // Ensure health doesn't go below zero
+            isDead = true; // Set the player as dead
             Debug.Log("Player is dead!");
             GameManageController.Instance?.gameOverUI?.ShowLoseScreen(); // Notify player death
 
         }
+
+        Debug.Log($"Player Health: {Health}");
     }
 
 }

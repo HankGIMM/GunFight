@@ -18,6 +18,9 @@ public class PlayerHUD : MonoBehaviour
     [Header("Player Health UI")]
     public TextMeshProUGUI healthText; // Text for player health
 
+    [Header("Pickup promt UI")]
+    public TextMeshProUGUI pickupPromptText; // Text for pickup prompt
+
     private PlayerController playerController;
     private WaveSpawner waveSpawner;
 
@@ -36,6 +39,11 @@ public class PlayerHUD : MonoBehaviour
         {
             Debug.LogError("WaveSpawner not found in the scene.");
         }
+        // Hide the pickup prompt initially
+        if (pickupPromptText != null)
+        {
+            pickupPromptText.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -44,17 +52,14 @@ public class PlayerHUD : MonoBehaviour
         UpdateAmmoUI();
         UpdateWaveInfoUI();
         UpdateHealthUI();
+        
     }
 
-    private void UpdateAmmoUI()
+    public void UpdateAmmoUI()
     {
-        if (playerController != null && playerController.equippedWeapon != null)
+        if (playerController != null && playerController.equippedWeapon is Gun gun)
         {
-            Gun gun = playerController.equippedWeapon as Gun;
-            if (gun != null)
-            {
-                ammoText.text = $"Ammo: {gun.currentAmmo}/{gun.totalAmmo}";
-            }
+            ammoText.text = $"Ammo: {gun.currentAmmo}/{gun.totalAmmo}";
         }
         else
         {
@@ -88,6 +93,30 @@ public class PlayerHUD : MonoBehaviour
         else
         {
             healthText.text = "Health: --";
+        }
+    }
+
+    // Show the pickup prompt
+    public void ShowPickupPrompt(string message)
+    {
+        if (pickupPromptText != null)
+        {
+            Debug.Log($"Showing pickup prompt: {message}");
+            pickupPromptText.text = message;
+            pickupPromptText.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Pickup prompt text is not assigned in the Inspector.");
+        }
+    }
+
+    // Hide the pickup prompt
+    public void HidePickupPrompt()
+    {
+        if (pickupPromptText != null)
+        {
+            pickupPromptText.gameObject.SetActive(false);
         }
     }
 }

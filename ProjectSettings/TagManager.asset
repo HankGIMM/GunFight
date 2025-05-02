@@ -10,11 +10,12 @@ TagManager:
   - Tank
   - Enemy
   - CoverPoint
+  - Interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 

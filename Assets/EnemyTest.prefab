@@ -158,10 +158,10 @@ MonoBehaviour:
   Player: {fileID: 0}
   Health: 100
   DetectionRange: 500
-  ShootingRange: 150
-  RunSpeed: 25
+  ShootingRange: 175
+  RunSpeed: 30
   CoverPoint: {fileID: 0}
-  enemyGun: {fileID: 3318577136241409321}
+  enemyGun: {fileID: 8663486675854271900}
   NavAgent: {fileID: 0}
 --- !u!195 &7485743934733833099
 NavMeshAgent:
@@ -272,6 +272,18 @@ PrefabInstance:
       propertyPath: bulletSpeed
       value: 800
       objectReference: {fileID: 0}
+    - target: {fileID: 1525978056165970828, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: bulletSpread
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3953298138499476842, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3953298138499476842, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4270049818294310251, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
       propertyPath: m_Name
       value: EnemyGun
@@ -301,9 +313,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
---- !u!114 &3318577136241409321 stripped
+--- !u!4 &4221603150158651612 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+  m_PrefabInstance: {fileID: 4260590685418598053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8663486675854271900 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1525978056165970828, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4835260286127115065, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
   m_PrefabInstance: {fileID: 4260590685418598053}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -312,8 +329,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded71adb8e0fead499a2986d737f8a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4221603150158651612 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 123441161440775801, guid: 31ce7ead33666924abc379b8a8106743, type: 3}
-  m_PrefabInstance: {fileID: 4260590685418598053}
-  m_PrefabAsset: {fileID: 0}

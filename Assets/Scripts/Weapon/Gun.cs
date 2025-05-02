@@ -276,4 +276,10 @@ public class Gun : Weapon
             Debug.LogWarning("CameraRecoil script is not assigned to the Gun.");
         }
     }
+
+    public void AddAmmo(int amount)
+    {
+        totalAmmo += amount;
+        Debug.Log($"Added ammo: {amount}. Total ammo: {totalAmmo}");
+    }
 }
