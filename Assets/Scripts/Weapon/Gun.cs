@@ -59,11 +59,23 @@ public class Gun : Weapon
     {
         transform.localRotation = Quaternion.identity; // Reset local rotation to (0, 0, 0)
 
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
         {
-            Debug.LogError("AudioSource component is missing from the Gun GameObject.");
+            GameObject assultTestObject = GameObject.Find("SFXAudioSource");
+            if (assultTestObject != null)
+            {
+                audioSource = assultTestObject.GetComponent<AudioSource>();
+                if (audioSource == null)
+                {
+                    Debug.LogError("AudioSource component not found on 'SFXAudioSource' after scene load.");
+                }
+            }
+            else
+            {
+                Debug.LogError("GameObject 'SFXAudioSource' not found in the scene after scene load.");
+            }
         }
 
         if (playerCamera != null)

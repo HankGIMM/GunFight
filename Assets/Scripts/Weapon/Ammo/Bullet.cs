@@ -14,6 +14,7 @@ public abstract class Bullet : MonoBehaviour
 
     private EnemyStateController enemyStateController;
     private PlayerController playerController;
+    
 
 
     //public bool isEnemyBullet = false; // Flag to differentiate between player and enemy bullets
@@ -76,7 +77,9 @@ public abstract class Bullet : MonoBehaviour
         // Instantiate blood effect
         if (bloodEffect != null)
         {
-            Instantiate(bloodEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
+            bloodEffect.transform.position = collision.contacts[0].point;
+            bloodEffect.transform.rotation = Quaternion.LookRotation(collision.contacts[0].normal);
+            bloodEffect.SetActive(true);
         }
 
         // Play ricochet sound

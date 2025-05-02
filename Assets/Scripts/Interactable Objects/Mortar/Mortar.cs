@@ -145,6 +145,11 @@ public class Mortar : Interactable
         playerController.playerCamera.gameObject.SetActive(true);
         playerController.enabled = true; // Re-enable the PlayerController script
 
+        if (playerController.equippedWeapon != null)
+        {
+            playerController.equippedWeapon.gameObject.SetActive(true); // Ensure the weapon is active
+        }
+
         // Enable the player's AudioListener and disable the mortar camera's AudioListener
         AudioListener playerAudioListener = playerController.playerCamera.GetComponent<AudioListener>();
         AudioListener mortarAudioListener = mortarCamera.GetComponent<AudioListener>();

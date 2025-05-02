@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; // Required for scene management
+using TMPro; // Required for TextMeshPro
+using UnityEngine.UI; // Required for UI elements
+
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -55,9 +58,10 @@ public class GameSceneManager : MonoBehaviour
     // Method to restart the current scene
     public void RestartScene()
     {
-        Debug.Log("Restarting the current scene...");
+        Debug.Log("Restarting the current scene..." + SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f; // Ensure game time is resumed
         AudioManager.Instance.ReloadAudioClips(); // Reload audio clips
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the current scene
+
     }
 }

@@ -54,6 +54,26 @@ public class AudioManager : MonoBehaviour
         LoadAudioClipsForTag("Player", "Audio/SFX/Ricochet/Player/");
     }
 
+    void Update()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            GameObject assultTestObject = GameObject.Find("SFXAudioSource");
+            if (assultTestObject != null)
+            {
+                sfxSource = assultTestObject.GetComponent<AudioSource>();
+                if (sfxSource == null)
+                {
+                    Debug.LogError("AudioSource component not found on 'SFXAudioSource' after scene load.");
+                }
+            }
+            else
+            {
+                Debug.LogError("GameObject 'SFXAudioSource' not found in the scene after scene load.");
+            }
+        }
+    }
+
     public void PlayMusic(AudioClip clip, float volume = 1f, float fadeDuration = 1f)
     {
         if (musicSource.clip == clip) return; // Avoid restarting the same music
@@ -181,13 +201,13 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogError($"No audio clips found in folder: {folderPath} for tag: {tag}");
-            
+
         }
     }
 
     public void ReloadAudioClips()
     {
-        tagToAudioClips.Clear(); // Clear existing clips
+        // tagToAudioClips.Clear(); // Clear existing clips
         LoadAudioClipsForTag("Wall", "Audio/SFX/Ricochet/Wall/");
         LoadAudioClipsForTag("Ground", "Audio/SFX/Ricochet/Ground/");
         LoadAudioClipsForTag("Enemy", "Audio/SFX/Ricochet/Enemy/");
